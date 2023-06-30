@@ -1,0 +1,23 @@
+---
+- name: Get x-zerto-session
+  zerto_authenticate:
+    zvm_ipaddress: "{{ zerto['infra']['zvm_ipaddress'] }}"
+    zvm_username: "{{ zerto['user']['zvm_username'] }}"
+    zvm_password: "{{ zerto['user']['zvm_password'] }}"
+  register: zerto_authenticate_output
+  ignore_errors: yes
+
+- name: Print if zerto session API failed
+  fail:
+    msg: "Failed to get the zerto x-session. Invalid user name or password."
+  when: zerto_authenticate_output.failed == true
+
+- name: Print if zerto session API success
+  debug:
+     msg: "x-session : {{ zerto_authenticate_output.zerto_apikey }}"
+  when: zerto_authenticate_output.failed == false
+
+- name: Set x-zerto-session key in fact
+  set_fact:
+    session_key: "{{ zerto_authenticate_output['zerto_apikey'] }}"
+

@@ -1,0 +1,31 @@
+---
+
+- name: Print vpg_identifiers fact
+  debug:
+    msg: "vpg_identifiers :: {{ vpg_identifiers }}"
+    
+- name: perform zerto vpg switchback
+  zerto_vpg_roleswitch:
+    zvm_ipaddress: "{{ zerto['infra']['zvm_ipaddress'] }}"
+    vpg_vpgidentifier: "{{ item }}"
+    session_key: "{{ session_key }}"
+    operation: "SwitchBack"
+  register: zerto_vpg_roleswitch_output
+  loop: "{{ vpg_identifiers }}"
+  ignore_errors: yes
+
+- name: Print if zerto vpg switchback  API failed
+  fail:
+    msg: "Failed while perform the switchback for VPG: {{ zerto['infra']['zvm_vpg_name'][index] }}"
+  when: zerto_vpg_roleswitch_output.results[index].failed == true
+  loop: "{{ zerto['infra']['zvm_vpg_name'] }}"
+  loop_control:
+    index_var: index
+
+- name: Print if zerto vpg switchback  API success
+  debug:
+    msg: "{{ zerto_vpg_roleswitch_output.results[index].task_id }} for {{ zerto['infra']['zvm_vpg_name'][index] }}"
+  when: zerto_vpg_roleswitch_output.results[index].failed == false
+  loop: "{{ zerto['infra']['zvm_vpg_name'] }}"
+  loop_control:
+    index_var: index

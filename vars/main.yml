@@ -1,0 +1,25 @@
+---
+#provide the valid zerto input.
+#zerto:
+#  infra:
+#    zvm_ipaddress: X.X.X.X
+#    zvm_port: 3664
+#    zvm_vpg_name:
+#      - 'SEVPG'
+#  user:
+#    zvm_username: ''
+#    zvm_password: ''
+#  resource:
+#    mem:
+#      size: 126
+#      unit: 'mb'
+#    cpu:
+#      cores: 2
+#      cap: 1
+#  operations:
+#    wait_time: 60
+#    retry: 5
+#    initial_delay: 30
+#    delay: 60
+#    time_unit: 'sec'
+

@@ -1,0 +1,19 @@
+---
+- name: Confirm VPG avilable for operations
+  zerto_is_vpg_exist:
+    zvm_ipaddress: "{{ zerto['infra']['zvm_ipaddress'] }}"
+    vpg_name: "{{ zerto['infra']['zvm_vpg_name'][0] }}"
+    session_key: "{{ session_key }}"
+  register: zerto_is_vpg_exist_output
+  ignore_errors: yes
+
+- name: Print if VPG is avilable
+  debug:
+    msg: "VPG: {{ zerto['infra']['zvm_vpg_name'][0] }} is avilable for the zero operations."
+  when: zerto_is_vpg_exist_output.isVpgExist|bool == true
+
+- name: Fail if VPG is not avilable
+  fail:
+    msg: "Provided VPG: {{ zerto['infra']['zvm_vpg_name'][0] }} not exist. Please provide the valid VPG name and re-execute the play-book."
+  when: zerto_is_vpg_exist_output.isVpgExist|bool == false
+

@@ -1,0 +1,38 @@
+---
+- name: Find zerto_vpg_identifier
+  zerto_vpg_identifier:
+    zvm_ipaddress: "{{ zerto['infra']['zvm_ipaddress'] }}"
+    vpg_name: "{{ item }}"
+    session_key: "{{ session_key }}"
+  register: zerto_vpg_identifier_output
+  loop: "{{ zerto['infra']['zvm_vpg_name'] }}"
+  ignore_errors: yes
+
+- name: Print if zerto get VPG identifier API failed
+  fail:
+    msg: "Failed to get the VPG identifier for VPG: {{ item }}."
+  when: zerto_vpg_identifier_output.results[index].failed == true
+  loop: "{{ zerto['infra']['zvm_vpg_name'] }}"
+  loop_control:
+    index_var: index
+
+- name: Print if zerto get VPG identifier API success
+  debug:
+    msg: "VPG: {{ item }} and ID: {{ zerto_vpg_identifier_output.results[index].vpg_id }}"
+  when: zerto_vpg_identifier_output.results[index].failed == false
+  loop: "{{ zerto['infra']['zvm_vpg_name'] }}"
+  loop_control:
+    index_var: index
+
+#- name: Set zerto-vpg-identifier key in fact
+#  set_fact:
+#    vpg_id_key: "{{ zerto_vpg_identifier_output['vpg_id'] }}"
+    
+
+- name: Set zerto-vpg-identifier in fact
+  set_fact: 
+    vpg_identifiers: "{{vpg_identifiers | default([]) + [zerto_vpg_identifier_output.results[index].vpg_id]}}" 
+  loop: "{{ zerto['infra']['zvm_vpg_name'] }}"
+  loop_control:
+    index_var: index
+

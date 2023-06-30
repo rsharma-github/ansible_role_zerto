@@ -1,0 +1,11 @@
+---
+- name: Validate required inputs
+  fail:
+    msg: "Available memory is not enough to run this play-book"
+  when:
+    - ansible_memtotal_mb|int < zerto['resource']['mem']['size']
+
+- name: Is valid vpg name
+  fail:
+    msg: "Zerto vpg name is missing or incorrect."
+  when: zerto['infra']['zvm_vpg_name'][0]  is not defined or zerto['infra']['zvm_vpg_name'][0] == ""

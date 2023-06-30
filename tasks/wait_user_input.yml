@@ -1,0 +1,4 @@
+---
+- name: Pause for check the FailoverTestStatus
+  ansible.builtin.pause:
+    prompt: "Zerto FailoverTest successfully. Please check the status in the backend and press ctrl+C then 'C' = continue to clean the FOTE vpg or, ctrl+C then 'A' = abort the play-book"

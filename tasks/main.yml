@@ -1,0 +1,10 @@
+---
+# tasks file for zerto
+- import_tasks: zert_prechecks.yml
+- import_tasks: zerto_auth.yml
+- import_tasks: zerto_is_vpg_available.yml
+- import_tasks: zerto_find_vpg_id.yml
+#- import_tasks: zerto_failover.yml
+#- import_tasks: wait_user_input.yml 
+#- import_tasks: zerto_failover_cleanup.yml
+#- import_tasks: zerto_switchover.yml
