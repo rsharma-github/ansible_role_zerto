@@ -27,14 +27,10 @@ galaxy_info:
   # To view available platforms and versions (or releases), visit:
   # https://galaxy.ansible.com/api/v1/platforms/
   #
-   platforms:
-   - name: RHEL
-     versions:
-     - all
-   - name: WIN
-     versions:
-     - all
-
+  platforms:
+    - name: RHEL
+      versions:
+      - all
 
   galaxy_tags: [Zerto_FailoverTest,Zert_Sitchover,Zerto_Switchback]
     # List tags for your role here, one per line. A tag is a keyword that describes
